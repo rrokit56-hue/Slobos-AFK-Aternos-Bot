@@ -1,54 +1,87 @@
-const mineflayer = require('mineflayer');
-
-function createBot() {
-  const bot = mineflayer.createBot({
-    host: 'BR-CRAFT.aternos.me',
-    port: 31232,
-    username: 'AfkJumpBot',
-    version: '1.20.1' // إصدار مستقر ومتوافق مع ViaVersion
-  });
-
-  // ضع كلمة المرور الخاصة بالبوت هنا بين علامتي التنصيص
-  const PASSWORD = 'Booot123'; 
-
-  bot.on('spawn', () => {
-    console.log('Bot joined the server successfully!');
-
-    // إرسال أمر التسجيل للحسابات الجديدة
-    setTimeout(() => {
-      bot.chat(`/register ${PASSWORD} ${PASSWORD}`);
-    }, 2000);
-
-    // إرسال أمر تسجيل الدخول للحسابات المسجلة مسبقاً
-    setTimeout(() => {
-      bot.chat(`/login ${PASSWORD}`);
-    }, 4000);
-  });
-
-  // نظام منع الـ AFK (يقفز كل 5 ثوانٍ)
-  setInterval(() => {
-    if (bot.entity) {
-      bot.setControlState('jump', true);
-      setTimeout(() => {
-        bot.setControlState('jump', false);
-      }, 500); // مدة القفزة نصف ثانية
+{
+  "name": "AFK Bot",
+  "bot-account": {
+    "username": "Slobot00",
+    "password": "",
+    "type": "offline"
+  },
+  "server": {
+    "ip": "BR-CRAFT.aternos.me",
+    "port": 23707,
+    "version": "",
+    "try-creative": false
+  },
+  "position": {
+    "enabled": true,
+    "x": 0,
+    "y": 100,
+    "z": 0
+  },
+  "utils": {
+    "auto-auth": {
+      "enabled": true,
+      "password": "chalol78"
+    },
+    "anti-afk": {
+      "enabled": true,
+      "sneak": true
+    },
+    "chat-messages": {
+      "enabled": true,
+      "repeat": true,
+      "repeat-delay": 120,
+      "messages": [
+        "I'm a regular player",
+        "Subscribe to Slobos!",
+        "I like to play Minecraft!"
+      ]
+    },
+    "chat-log": true,
+    "auto-reconnect": true,
+    "auto-reconnect-delay": 2000,
+    "max-reconnect-delay": 120000
+  },
+  "movement": {
+    "enabled": true,
+    "circle-walk": {
+      "enabled": true,
+      "radius": 4,
+      "speed": 3000
+    },
+    "look-around": {
+      "enabled": true,
+      "interval": 5000
+    },
+    "random-jump": {
+      "enabled": true,
+      "interval": 10000
     }
-  }, 5000); // 5000 ميللي ثانية = 5 ثوانٍ
-
-  bot.on('kick', (reason) => {
-    console.log(`Bot was kicked because: ${reason}`);
-  });
-
-  bot.on('error', (err) => {
-    console.log('Connection error code:', err.code);
-  });
-
-  // إعادة الاتصال تلقائياً إذا انقطع الاتصال أو أغلقت السيرفرات
-  bot.on('end', () => {
-    console.log('Connection lost, reconnecting in 5 seconds...');
-    setTimeout(createBot, 5000);
-  });
+  },
+  "modules": {
+    "avoidMobs": true,
+    "combat": true,
+    "beds": false,
+    "chat": true,
+    "console-commands": true
+  },
+  "combat": {
+    "attack-mobs": true,
+    "auto-eat": true
+  },
+  "beds": {
+    "pick-up-day": false,
+    "place-night": false
+  },
+  "discord": {
+    "enabled": false,
+    "webhookUrl": "YOUR_DISCORD_WEBHOOK_URL_HERE",
+    "events": {
+      "connect": true,
+      "disconnect": true,
+      "chat": false
+    }
+  },
+  "chat": {
+    "respond": true
+  }
 }
-
-createBot();
-
